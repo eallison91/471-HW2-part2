@@ -21,7 +21,7 @@ MESI_SMPCache::MESI_SMPCache(int cpuid,
 
 }
 
-void MESI_SMPCache::fillLine(uint32_t addr, uint32_t msi_state){
+void MESI_SMPCache::fillLine(uint32_t addr, uint32_t mesi_state){
 
   //this gets the state of whatever line this address maps to 
   MESI_SMPCacheState *st = (MESI_SMPCacheState *)cache->findLine2Replace(addr); 
@@ -34,8 +34,8 @@ void MESI_SMPCache::fillLine(uint32_t addr, uint32_t msi_state){
   /*Set the tags to the tags for the newly cached block*/
   st->setTag(cache->calcTag(addr));
 
-  /*Set the state of the block to the msi_state passed in*/
-  st->changeStateTo((MESIState_t)msi_state);
+  /*Set the state of the block to the mesi_state passed in*/
+  st->changeStateTo((MESIState_t)mesi_state);
   return;
     
 }
@@ -94,6 +94,17 @@ MESI_SMPCache::RemoteReadService MESI_SMPCache::readRemoteAction(uint32_t addr){
         return MESI_SMPCache::RemoteReadService(true,true);
 
       /*Line was cached, but invalid*/
+      }else if(otherState->getState() == MESI_EXCLUSIVE){ 
+
+        /*Exclusive transitions to Shared on a remote Read*/
+        otherState->changeStateTo(MESI_SHARED);
+
+        /*Return a Remote Read Service indicating that
+         *1) The line was not shared (false param)
+         *2) The line was provided by otherCache, as only it had it cached
+         */
+        return MESI_SMPCache::RemoteReadService(false,true);
+
       }else if(otherState->getState() == MESI_INVALID){ 
 
         /*Do Nothing*/
@@ -156,7 +167,13 @@ void MESI_SMPCache::readLine(uint32_t rdPC, uint32_t addr){
     } 
 
     /*Fill the line*/
-    fillLine(addr,MESI_SHARED); 
+    if (rrs.providedData) {
+      /*If data was provided by another cache, make Shared*/
+      fillLine(addr,MESI_SHARED); 
+    } else {
+      /*Else data was not provided by another cache, so make Excluisve*/
+      fillLine(addr, MESI_EXCLUSIVE);
+    }
       
   }else{
 
@@ -273,6 +290,12 @@ void MESI_SMPCache::writeLine(uint32_t wrPC, uint32_t addr){
     st->changeStateTo(MESI_MODIFIED);
     return;
 
+  }else if(st->getState() == MESI_EXCLUSIVE){
+    /*If the block is in Exclusive, we own it and do not need to broadcast
+     *the write on the bus since all other copies must be invalid.
+     */
+    st->changeStateTo(MESI_MODIFIED);
+    return;
   }else{ //Write Hit
 
     /*Already have it writable: No coherence action required!*/
