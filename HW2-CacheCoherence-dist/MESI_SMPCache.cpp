@@ -294,6 +294,8 @@ void MESI_SMPCache::writeLine(uint32_t wrPC, uint32_t addr){
     /*If the block is in Exclusive, we own it and do not need to broadcast
      *the write on the bus since all other copies must be invalid.
      */
+    numWriteHits++;
+
     st->changeStateTo(MESI_MODIFIED);
     return;
   }else{ //Write Hit
