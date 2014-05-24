@@ -1,0 +1,16 @@
+Loaded Protocol Plugin /homes/iws/efa91/cse471/471-HW2-part2/HW2-CacheCoherence-dist/MSI_SMPCache.so
+Loaded Protocol Plugin /homes/iws/efa91/cse471/471-HW2-part2/HW2-CacheCoherence-dist/MESI_SMPCache.so
+Using Reference Implementation /cse/courses/cse471/14sp/Assignments/HW2-CacheCoherence/Release/MESI_SMPCache.so
+PARSEC Benchmark Suite Version 2.1
+read 10 points
+In fini
+In fini loop
+In fini loop
+CPUId, numReadHits, numReadMisses, numReadOnInvalidMisses, numReadRequestsSent, numReadMissesServicedByOthers, numReadMissesServicedByShared, numReadMissesServicedByModified, numWriteHits, numWriteMisses, numWriteOnSharedMisses, numWriteOnInvalidMisses, numInvalidatesSent
+0,541337,15456,0,15456,5848,83,5765,191668,7770,5620,0,7770
+CPUId, numReadHits, numReadMisses, numReadOnInvalidMisses, numReadRequestsSent, numReadMissesServicedByOthers, numReadMissesServicedByShared, numReadMissesServicedByModified, numWriteHits, numWriteMisses, numWriteOnSharedMisses, numWriteOnInvalidMisses, numInvalidatesSent
+1,115823,5729,0,5729,5646,148,5498,44075,6137,5906,0,6137
+CPUId, numReadHits, numReadMisses, numReadOnInvalidMisses, numReadRequestsSent, numReadMissesServicedByOthers, numReadMissesServicedByShared, numReadMissesServicedByModified, numWriteHits, numWriteMisses, numWriteOnSharedMisses, numWriteOnInvalidMisses, numInvalidatesSent
+0,541337,15456,0,15456,5848,37,5811,191948,7490,5340,0,7490
+CPUId, numReadHits, numReadMisses, numReadOnInvalidMisses, numReadRequestsSent, numReadMissesServicedByOthers, numReadMissesServicedByShared, numReadMissesServicedByModified, numWriteHits, numWriteMisses, numWriteOnSharedMisses, numWriteOnInvalidMisses, numInvalidatesSent
+1,115823,5729,0,5729,5646,23,5623,44079,6133,5902,0,6133
