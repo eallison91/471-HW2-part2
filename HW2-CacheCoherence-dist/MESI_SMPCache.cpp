@@ -277,7 +277,9 @@ void MESI_SMPCache::writeLine(uint32_t wrPC, uint32_t addr){
      *miss.  We need to upgrade to Modified to write, and all other
      *copies must be invalidated
     */
-    numWriteMisses++;
+    
+    //numWriteMisses++; // should be write hit
+    numWriteHits++;
 
     /*Write-on-shared Coherence Misses*/
     numWriteOnSharedMisses++;
